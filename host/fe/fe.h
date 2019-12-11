@@ -47,6 +47,8 @@ struct dev
 	int mode;
 	int fd;
 	char *path;
+	void (*mntcb)(struct dev*);
+	void (*unmntcb)(struct dev*);
 };
 extern struct dev devtab[];
 
@@ -62,6 +64,8 @@ void quit(void);
 void err(char *str);
 void typestr(char *str);
 void typestrnl(char *str);
+
+void c_listf(int argc, char *argv[]);
 
 void coloncmd(char *line);
 void docmd(char *cmd, char *line);
@@ -83,6 +87,8 @@ void cpu_exec(word inst);
 void cpu_ioreset(void);
 void cpu_printflags(void);
 
+void mnt_ptp(struct dev*);
+void unmnt_ptp(struct dev*);
 void fe_svc(void);
 
 void initcrt(const char *host);

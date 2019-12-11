@@ -248,16 +248,16 @@ examine(hword a)
 		return w;
 
 	case TTY_TTI:
-		return (h2f_apr[REG_TTY]>>9) & 0377;
+		return h2f_apr[REG_TTY] & 0377;
 	case TTY_ST:
-		return h2f_apr[REG_TTY] & 0177;
+		return (h2f_apr[REG_TTY]>>9) & 01777;
 	case PTR_PTR:
 		w = h2f_apr[REG_PTR_LT];
 		w <<= 18;
 		w |= h2f_apr[REG_PTR_RT] & RT;
 		return w;
 	case PTR_ST:
-		return h2f_apr[REG_PTR] & 0177;
+		return h2f_apr[REG_PTR] & 07777;
 
 	case FE_REQ:
 		return h2f_fe[FEREG_REQ];
@@ -364,7 +364,7 @@ X	typestr("<READIN>\r\n");
 	X	run = 0;
 	keyup(MMKA_SING_INST | MMKA_ADR_STOP);
 	h2f_apr[REG_MAINT_UP] = 0177;
-	h2f_apr[REG_MAINT_DN] = a & 0177;
+	h2f_apr[REG_MAINT_DN] = (a>>2) & 0177;
 	keytoggle(MMKA_READIN);
 	X	run = 1;
 	X	memstop = 0;
@@ -642,8 +642,12 @@ printf("%d%d%d%d%d%d%d%d -> PTR\r\n",
 	!!(c&04), !!(c&02), !!(c&01));
 fflush(stdout);
 		h2f_fe[FEREG_PTR] = c;
-	}
+	}else
+		h2f_fe[FEREG_PTR] = 0777;
 }
+
+void mnt_ptp(struct dev *dev) { h2f_fe[FEREG_PTP] = 1; }
+void unmnt_ptp(struct dev *dev) { h2f_fe[FEREG_PTP] = 0; }
 
 static void
 svc_ptp(void)

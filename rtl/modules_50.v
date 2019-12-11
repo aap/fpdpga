@@ -12,6 +12,46 @@ module clk60hz(
 			cnt <= cnt + 20'b1;
 endmodule
 
+// input 50mhz, output ~110hz
+module clk110hz(
+	input wire clk,
+	input wire en,
+	output wire outclk
+);
+	reg [18:0] cnt = 0;
+	assign outclk = cnt == 454545;
+	always @(posedge clk) begin
+		if(~en)
+			cnt <= 454545/2;
+		else begin
+			if(outclk)
+				cnt <= 0;
+			else
+				cnt <= cnt + 19'b1;
+		end
+	end
+endmodule
+
+// input 50mhz, output ~150hz
+module clk150hz(
+	input wire clk,
+	input wire en,
+	output wire outclk
+);
+	reg [18:0] cnt = 0;
+	assign outclk = cnt == 333333;
+	always @(posedge clk) begin
+		if(~en)
+			cnt <= 333333/2;
+		else begin
+			if(outclk)
+				cnt <= 0;
+			else
+				cnt <= cnt + 19'b1;
+		end
+	end
+endmodule
+
 // input 50mhz, output 63.3hz
 module clk63_3hz(
 	input wire clk,
@@ -26,6 +66,26 @@ module clk63_3hz(
 			cnt <= cnt + 20'b1;
 endmodule
 
+// input 50mhz, output 600hz
+module clk600hz(
+	input wire clk,
+	input wire en,
+	output wire outclk
+);
+	reg [16:0] cnt = 0;
+	assign outclk = cnt == 83333;
+	always @(posedge clk) begin
+		if(~en)
+			cnt <= 83333/2;
+		else begin
+			if(outclk)
+				cnt <= 0;
+			else
+				cnt <= cnt + 17'b1;
+		end
+	end
+endmodule
+
 // input 50mhz, output 25khz
 module clk25khz(
 	input wire clk,
@@ -33,12 +93,16 @@ module clk25khz(
 	output wire outclk
 );
 	reg [10:0] cnt = 0;
-	assign outclk = en & (cnt == 2000);
+	assign outclk = cnt == 2000;
 	always @(posedge clk)
-		if(outclk)
-			cnt <= 0;
-		else
-			cnt <= cnt + 11'b1;
+		if(~en)
+			cnt <= 2000/2;
+		else begin
+			if(outclk)
+				cnt <= 0;
+			else
+				cnt <= cnt + 11'b1;
+		end
 endmodule
 
 // input 50mhz, output 50khz
@@ -53,6 +117,25 @@ module clk50khz(
 			cnt <= 0;
 		else
 			cnt <= cnt + 10'b1;
+endmodule
+
+// input 50mhz, output 500khz
+module clk500khz(
+	input wire clk,
+	input wire en,
+	output wire outclk
+);
+	reg [6:0] cnt = 0;
+	assign outclk = cnt == 100;
+	always @(posedge clk)
+		if(~en)
+			cnt <= 100/2;
+		else begin
+			if(outclk)
+				cnt <= 0;
+			else
+				cnt <= cnt + 7'b1;
+		end
 endmodule
 
 /* A B138 full adder with carry insert and carry kill */

@@ -8,6 +8,14 @@ They use delays that are triggered by pulses and output another
 pulse after some time. Instead of pulses I use clock enables, and delays are
 implemented by a counter synchronized to the 50MHz system clock.
 
+## Peripherals
+
+The PDP-6 and KA10 both have their respective TTY, PTR and PTP interaces simulated.
+In addition we have the type 340 display and spacewar consoles.
+
+The next steps will be DECtape (both 551 and TD10) and a disk to actually get some
+operating systems running.
+
 ## Boards
 
 Right now only the DE0-Nano-SoC is supported.
@@ -39,4 +47,5 @@ ka10	verilog and qsys tcl files for KA10 components
 rtl	verilog for non-qsys modules
 roms	rom files
 quartus	quartus projects
+tb	test simulations for icarus verilog
 ```

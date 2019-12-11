@@ -5,7 +5,7 @@
    displayName="$${FILENAME}"
    version="1.0"
    description=""
-   tags=""
+   tags="INTERNAL_COMPONENT=false"
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
@@ -70,7 +70,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "1";
+         value = "0";
          type = "boolean";
       }
    }
@@ -81,6 +81,11 @@
          value = "8";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element fe_req
    {
@@ -88,6 +93,11 @@
       {
          value = "4";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
       }
    }
    element fmem
@@ -154,7 +164,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "1";
+         value = "0";
          type = "boolean";
       }
    }
@@ -214,7 +224,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "1";
+         value = "0";
          type = "boolean";
       }
    }
@@ -246,6 +256,11 @@
          value = "9";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element ptr
    {
@@ -253,6 +268,11 @@
       {
          value = "10";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
       }
    }
    element ptr.fe_s
@@ -408,6 +428,11 @@
          value = "11";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
    }
    element wcsl420
    {
@@ -415,6 +440,11 @@
       {
          value = "7";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
       }
    }
    element wcsl724
@@ -424,6 +454,11 @@
          value = "6";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element wcsl_av
    {
@@ -431,6 +466,11 @@
       {
          value = "3";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
       }
    }
 }
@@ -513,6 +553,7 @@
    dir="start" />
  <interface name="hps_0_h2f_user0_clock" internal="hps_0.h2f_user0_clock" />
  <interface name="hps_0_hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
+ <interface name="hps_0_uart1" internal="hps_0.uart1" type="conduit" dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
  <interface name="panel" internal="panel.externals" type="conduit" dir="end" />
  <interface name="ptp" internal="ptp.externals" type="conduit" dir="end" />
@@ -1017,8 +1058,8 @@
   <parameter name="TRFC" value="350" />
   <parameter name="UART0_Mode" value="No Flow Control" />
   <parameter name="UART0_PinMuxing" value="HPS I/O Set 0" />
-  <parameter name="UART1_Mode" value="N/A" />
-  <parameter name="UART1_PinMuxing" value="Unused" />
+  <parameter name="UART1_Mode" value="Full" />
+  <parameter name="UART1_PinMuxing" value="FPGA" />
   <parameter name="USB0_Mode" value="N/A" />
   <parameter name="USB0_PinMuxing" value="Unused" />
   <parameter name="USB1_Mode" value="SDR" />

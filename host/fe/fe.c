@@ -666,6 +666,10 @@ threadmain(int argc, char *argv[])
 				nbuf = 0;
 				break;
 
+			case CTL('F'):
+				c_listf(0, nil);
+				break;
+
 			case '?':
 				typestrnl_(flags & CF ? colhelpstr : helpstr);
 				break;

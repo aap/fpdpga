@@ -245,7 +245,6 @@ module ka10(
 	assign iobus_iob_fm_datai = iob_datai;
 	assign iobus_iob_fm_status = iob_status;
 	assign iobus_rdi_pulse = iot_rdi_pulse;	// pulse
-//	input wire iobus_rdi_data,
 	assign iobus_iob_out = iob_fm_ar ? ar :
 		cpa_status ? cpa_iob :
 		pi_status ? pi_iob :
@@ -257,24 +256,42 @@ module ka10(
 	wire iob_datai = iot_datai & iot_data_xfer;
 	wire iob_fm_ar = iot_out_going & iot_data_xfer;
 
+	wire iob_rdi_data_posedge;
+	wire iob_rdi_data_negedge;
+	wire iob_rdi_data;
+	gdly1us iob_dly0(.clk(clk), .reset(reset),
+		.p(iobus_rdi_data), .l(1'b1),
+		.q(iob_rdi_data));
+	pa iob_pa0(clk, reset, iob_rdi_data, iob_rdi_data_posedge);
+	pa iob_pa1(clk, reset, ~iob_rdi_data, iob_rdi_data_negedge);
+
 	wire bio_cpa_sel = ir[3:9] == 0;
 	wire bio_pi_sel = ir[3:9] == 1;
+/*	// unused here
 	wire bio_ptp_sel = ir[3:9] == 'o20;
 	wire bio_ptr_sel = ir[3:9] == 'o21;
 	wire bio_tty_sel = ir[3:9] == 'o24;
+*/
 
 
 	/* MR */
-	// TODO: do this properly
-	// mr_pwr_clr_enb;
-	// wire pwr_on_ind = ~mr_pwr_clr_enb;
+`ifdef simulation
+	wire mr_pwr_clr_enb = 0;
+	pg mr_pg1(.clk(clk), .reset(reset), .in(sw_power), .p(mr_pwr_clr));
 	assign pwr_on_ind = sw_power;
+`else
+	wire sw_power_pulse;
+	wire mr_pwr_clr_enb;
+	pg mr_pg0(clk, reset, sw_power, sw_power_pulse);
+	ldly5s mr_dly0(.clk(clk), .reset(reset), .in(sw_power_pulse), .l(mr_pwr_clr_enb));
+	clk500khz mr_clk0(clk, mr_pwr_clr_enb, mr_pwr_clr);
+	assign pwr_on_ind = sw_power & ~mr_pwr_clr_enb;
+`endif
 
 	wire mr_pwr_clr;
 	wire mr_start;
 	wire mr_clr;
 
-	pg mr_pg1(.clk(clk), .reset(reset), .in(sw_power), .p(mr_pwr_clr));
 	pa mr_pa1(.clk(clk), .reset(reset),
 		.in(mr_pwr_clr |
 		    kt0a & key_rdi & ~run |
@@ -363,10 +380,10 @@ module ka10(
 		.q(kt0));
 	pa key_pa4(.clk(clk), .reset(reset), .in(kt0), .p(kt0a));
 	pa key_pa5(.clk(clk), .reset(reset),
-		// TODO
 		.in(kt0a_D & kt1_en |
 		    knt3_D |
-		    st9 & key_sync & ~e_xctf),
+		    st9 & key_sync & ~e_xctf |
+		    iob_rdi_data_posedge & key_rim),
 		.p(kt1));
 	pa key_pa6(.clk(clk), .reset(reset), .in(kt1_D), .p(kt2));
 	pa key_pa7(.clk(clk), .reset(reset), .in(kt2_D), .p(kt3));
@@ -417,7 +434,7 @@ module ka10(
 	wire kst1_D;
 	// SIM: this delay is 30ms really, to debounce the keys
 	gdly0_2us key_dly1(.clk(clk), .reset(reset),
-		.p(key_manual), .l(1'b1),
+		.p(key_manual), .l(~mr_pwr_clr_enb),
 		.q(key_manual_D));
 	gdly1us key_dly2(.clk(clk), .reset(reset),
 		.p(key_fcn_strobe), .l(1'b1),
@@ -480,6 +497,8 @@ module ka10(
 		end
 		if(ex_clr)
 			key_rdi_part2 <= 0;
+		if(iob_rdi_data_negedge)
+			key_rdi_part2 <= 1;
 		if(key_run_clr)
 			run <= 0;
 		if(key_fcn_strobe) begin

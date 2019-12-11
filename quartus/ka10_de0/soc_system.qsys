@@ -55,6 +55,11 @@
          value = "18";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element dis340
    {
@@ -63,6 +68,11 @@
          value = "8";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element fe_req
    {
@@ -70,6 +80,11 @@
       {
          value = "4";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
       }
    }
    element hps_0
@@ -100,6 +115,11 @@
          value = "12";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
    }
    element ka10
    {
@@ -118,7 +138,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "1";
+         value = "0";
          type = "boolean";
       }
    }
@@ -181,6 +201,11 @@
          value = "20";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element panel
    {
@@ -198,12 +223,20 @@
          type = "String";
       }
    }
-   element ptp
+   element ptp_ka10_0
    {
       datum _sortIndex
       {
          value = "9";
          type = "int";
+      }
+   }
+   element ptp_ka10_0.fe_s
+   {
+      datum baseAddress
+      {
+         value = "131080";
+         type = "String";
       }
    }
    element ptr
@@ -219,6 +252,54 @@
       datum baseAddress
       {
          value = "131076";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
          type = "String";
       }
    }
@@ -359,6 +440,11 @@
          value = "11";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element wcsl420
    {
@@ -366,6 +452,11 @@
       {
          value = "7";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
       }
    }
    element wcsl724
@@ -375,6 +466,11 @@
          value = "6";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element wcsl_av
    {
@@ -382,6 +478,11 @@
       {
          value = "3";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
       }
    }
 }
@@ -444,9 +545,10 @@
    dir="start" />
  <interface name="hps_0_h2f_user0_clock" internal="hps_0.h2f_user0_clock" />
  <interface name="hps_0_hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
+ <interface name="hps_0_uart1" internal="hps_0.uart1" type="conduit" dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
  <interface name="panel" internal="panel.externals" type="conduit" dir="end" />
- <interface name="ptp" internal="ptp.externals" type="conduit" dir="end" />
+ <interface name="ptp" internal="ptp_ka10_0.externals" type="conduit" dir="end" />
  <interface name="ptr" internal="ptr.externals" type="conduit" dir="end" />
  <interface name="reset" internal="clk.clk_in_reset" type="reset" dir="end" />
  <interface
@@ -937,8 +1039,8 @@
   <parameter name="TRFC" value="350" />
   <parameter name="UART0_Mode" value="No Flow Control" />
   <parameter name="UART0_PinMuxing" value="HPS I/O Set 0" />
-  <parameter name="UART1_Mode" value="N/A" />
-  <parameter name="UART1_PinMuxing" value="Unused" />
+  <parameter name="UART1_Mode" value="Full" />
+  <parameter name="UART1_PinMuxing" value="FPGA" />
   <parameter name="USB0_Mode" value="N/A" />
   <parameter name="USB0_PinMuxing" value="Unused" />
   <parameter name="USB1_Mode" value="SDR" />
@@ -1037,8 +1139,8 @@
   <parameter name="base_addr" value="805306368" />
  </module>
  <module name="panel" kind="panel_ka" version="1.0" enabled="1" />
- <module name="ptp" kind="ptp" version="1.0" enabled="1" />
- <module name="ptr" kind="ptr" version="1.0" enabled="1" />
+ <module name="ptp_ka10_0" kind="ptp_ka10" version="1.0" enabled="1" />
+ <module name="ptr" kind="ptr_ka10" version="1.0" enabled="1" />
  <module name="switch_pio" kind="altera_avalon_pio" version="18.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -1053,28 +1155,10 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="4" />
  </module>
- <module name="tty" kind="tty" version="1.0" enabled="1" />
+ <module name="tty" kind="tty_ka10" version="1.0" enabled="1" />
  <module name="wcsl420" kind="wcsl420" version="1.0" enabled="1" />
  <module name="wcsl724" kind="wcsl724" version="1.0" enabled="1" />
  <module name="wcsl_av" kind="wcsl_av" version="1.0" enabled="1" />
- <connection
-   kind="avalon"
-   version="18.0"
-   start="hps_0.h2f_lw_axi_master"
-   end="ptr.fe_s">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020004" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.0"
-   start="hps_0.h2f_lw_axi_master"
-   end="ptp.fe_s">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020008" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
  <connection
    kind="avalon"
    version="18.0"
@@ -1091,6 +1175,24 @@
    end="wcsl_av.fe_s">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00030000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.0"
+   start="hps_0.h2f_lw_axi_master"
+   end="ptr.fe_s">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00020004" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.0"
+   start="hps_0.h2f_lw_axi_master"
+   end="ptp_ka10_0.fe_s">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00020008" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1160,10 +1262,7 @@
  <connection kind="clock" version="18.0" start="clk.clk" end="button_pio.clk" />
  <connection kind="clock" version="18.0" start="clk.clk" end="memarbit_core.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="memif_core.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="tty.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="ptr.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="fe_req.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="ptp.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="ka10.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="panel.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="memif_fast.clock" />
@@ -1179,6 +1278,9 @@
  <connection kind="clock" version="18.0" start="clk.clk" end="wcsl420.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="memory_256k.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="cmem.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="tty.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="ptr.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="ptp_ka10_0.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="hps_0.f2h_axi_clock" />
  <connection
    kind="clock"
@@ -1199,8 +1301,19 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="iobus_connect.iobus_slave0"
-   end="tty.iobus_slave">
+   start="tty.iobus_slave"
+   end="iobus_connect.iobus_slave0">
+  <parameter name="endPort" value="" />
+  <parameter name="endPortLSB" value="0" />
+  <parameter name="startPort" value="" />
+  <parameter name="startPortLSB" value="0" />
+  <parameter name="width" value="0" />
+ </connection>
+ <connection
+   kind="conduit"
+   version="18.0"
+   start="ptp_ka10_0.iobus_slave"
+   end="iobus_connect.iobus_slave2">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1212,17 +1325,6 @@
    version="18.0"
    start="iobus_connect.iobus_slave1"
    end="ptr.iobus_slave">
-  <parameter name="endPort" value="" />
-  <parameter name="endPortLSB" value="0" />
-  <parameter name="startPort" value="" />
-  <parameter name="startPortLSB" value="0" />
-  <parameter name="width" value="0" />
- </connection>
- <connection
-   kind="conduit"
-   version="18.0"
-   start="iobus_connect.iobus_slave2"
-   end="ptp.iobus_slave">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1342,7 +1444,7 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="ptp.ptp_panel"
+   start="ptp_ka10_0.ptp_panel"
    end="panel.ptp_panel">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
@@ -1364,8 +1466,8 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="panel.tty_panel"
-   end="tty.tty_panel">
+   start="tty.tty_panel"
+   end="panel.tty_panel">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1387,10 +1489,7 @@
    version="18.0"
    start="clk.clk_reset"
    end="memif_core.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="tty.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptr.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="fe_req.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptp.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="ka10.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="panel.reset" />
  <connection
@@ -1423,6 +1522,13 @@
    start="clk.clk_reset"
    end="memory_256k.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="cmem.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="tty.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptr.reset" />
+ <connection
+   kind="reset"
+   version="18.0"
+   start="clk.clk_reset"
+   end="ptp_ka10_0.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
 </system>

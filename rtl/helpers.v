@@ -1,3 +1,18 @@
+module clock(clk, reset);
+	output reg clk;
+	output reg reset;
+
+	initial begin
+		clk = 0;
+		reset = 0;
+		#50 reset = 1;
+	end
+
+	always
+//		#5 clk = ~clk;
+		#10 clk = ~clk;
+endmodule
+
 module edgedet(clk, reset, signal, p);
 	input wire clk;
 	input wire reset;

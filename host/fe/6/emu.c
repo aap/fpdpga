@@ -475,6 +475,8 @@ cpu_printflags(void)
 {
 }
 
+void mnt_ptp(struct dev *dev) {}
+void unmnt_ptp(struct dev *dev) {}
 void fe_svc(void) {}
 
 void initcrt(const char *host) {}

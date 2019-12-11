@@ -181,12 +181,22 @@ wire  hps_fpga_reset_n;
 	  .hps_0_hps_io_hps_io_gpio_inst_GPIO53  ( HPS_LED   ),  //                               .hps_io_gpio_inst_GPIO53
 	  .hps_0_hps_io_hps_io_gpio_inst_GPIO54  ( HPS_KEY   ),  //                               .hps_io_gpio_inst_GPIO54
 	  .hps_0_hps_io_hps_io_gpio_inst_GPIO61  ( HPS_GSENSOR_INT ),  //                               .hps_io_gpio_inst_GPIO61
+		// UART
+		.hps_0_uart1_cts            (1'b1),
+		.hps_0_uart1_dsr            (1'b1),
+		.hps_0_uart1_dcd            (1'b1),
+		.hps_0_uart1_ri             (1'b1),
+//		.hps_0_uart1_dtr            (<connected-to-hps_0_uart1_dtr>),
+//		.hps_0_uart1_rts            (<connected-to-hps_0_uart1_rts>),
+//		.hps_0_uart1_out1_n         (<connected-to-hps_0_uart1_out1_n>),
+//		.hps_0_uart1_out2_n         (<connected-to-hps_0_uart1_out2_n>),
+		.hps_0_uart1_rxd            (uart1_rx),
+		.hps_0_uart1_txd            (uart1_tx),
 		//FPGA Partion
-	  .switch_pio_external_connection_export  ( SW ),  //  switch_pio_external_connection_export.export
-	  .button_pio_external_connection_export ( KEY	), // button_pio_external_connection.export
-	  .hps_0_h2f_reset_reset_n               (hps_fpga_reset_n )                //                hps_0_h2f_reset.reset_n
+		.switch_pio_external_connection_export (SW),
+		.button_pio_external_connection_export (KEY),
+		.hps_0_h2f_reset_reset_n               (hps_fpga_reset_n),
 
-		,
 		.cmem_externals_power(1'b1),
 		.cmem_externals_restart(1'b0),
 		.cmem_externals_single_step(1'b0),
@@ -251,10 +261,15 @@ wire  hps_fpga_reset_n;
 			sw_sync <= SW;
 	end
 
+	/* UART1 on HPS */
+	wire uart1_rx, uart1_tx;
+
 	/* UART */
 	wire rx, tx;
-	assign rx = GPIO_0[0];
-	assign GPIO_0[1] = tx;
+//	assign rx = GPIO_0[0];
+//	assign GPIO_0[1] = tx;
+	assign rx = uart1_tx;
+	assign uart1_rx = tx;
 
 	/* FE request */
 	wire fe_ptr_rq;

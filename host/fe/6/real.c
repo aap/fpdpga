@@ -637,16 +637,22 @@ svc_ptr(void)
 	u8 c;
 
 	fd = devtab[DEV_PTR].fd;
-	if(fd < 0)
+	if(fd < 0){
+		h2f_fe[FEREG_PTR] = 0777;
 		return;
+	}
 	if(read(fd, &c, 1) == 1){
 printf("%d%d%d%d%d%d%d%d -> PTR\r\n",
 	!!(c&0200), !!(c&0100), !!(c&040), !!(c&020), !!(c&010),
 	!!(c&04), !!(c&02), !!(c&01));
 fflush(stdout);
 		h2f_fe[FEREG_PTR] = c;
-	}
+	}else
+		h2f_fe[FEREG_PTR] = 0777;
 }
+
+void mnt_ptp(struct dev *dev) {}
+void unmnt_ptp(struct dev *dev) {}
 
 static void
 svc_ptp(void)

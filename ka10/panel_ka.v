@@ -138,16 +138,14 @@ module panel_ka(
 	output reg mi_prog_dis_sw,
 	output reg [3:9] rdi_sel,
 
-	/* TTY - currently from 6 */
+	/* TTY */
 	input wire [7:0] tty_tti,
-	input wire [6:0] tty_status,
+	input wire [9:0] tty_status,
 
-	/* PTR - currently from 6 */
-	output reg ptr_key_start,
-	output reg ptr_key_stop,
+	/* PTR */
 	output reg ptr_key_tape_feed,
 	input wire [35:0] ptr,
-	input wire [6:0] ptr_status,	// also includes motor on
+	input wire [11:0] ptr_status,
 
 	/* PTP - currently from 6 */
 	output reg ptp_key_tape_feed,
@@ -163,6 +161,19 @@ module panel_ka(
 );
 
 	wire ext_sw_power = switches[0];
+
+	always @(*) begin
+		case(switches[3:1])
+		3'b000: leds <= { ind_user, ind_pi_on, ind_prog_stop,
+			ind_mem_stop, ind_run, pwr_on_ind };
+		3'b001: leds <= tty_tti;
+		3'b010: leds <= tty_status;
+		3'b100: leds <= ptr_status[5:0];
+		3'b101: leds <= ptr_status[11:6];
+		3'b111: leds <= ext;
+		default: leds <= 0;
+		endcase
+	end
 
 	always @(*) begin
 		case(s_address)
@@ -215,7 +226,7 @@ module panel_ka(
 			ind_ex, ind_pi, ind_byte, ind_nr, ind_as
 		};
 
-		6'o40: s_readdata <= { tty_tti, 2'b0, tty_status };
+		6'o40: s_readdata <= { tty_status, 1'b0, tty_tti };
 		6'o41: s_readdata <= { ptp, 2'b0, ptp_status };
 		6'o42: s_readdata <= ptr_status;
 		6'o43: s_readdata <= ptr[35:18];

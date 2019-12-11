@@ -1,4 +1,4 @@
-module core161c_x(
+module core161c(
 	input wire clk,
 	input wire reset,
 	input wire power,

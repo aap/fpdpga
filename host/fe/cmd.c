@@ -1,4 +1,6 @@
 #include "fe.h"
+#include <sys/types.h>
+#include <dirent.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -251,8 +253,8 @@ c_loadsav(int argc, char *argv[])
 }
 
 struct dev devtab[] = {
-	{ "ptr", O_RDONLY, -1, nil },
-	{ "ptp", O_WRONLY | O_CREAT | O_TRUNC, -1, nil },
+	{ "ptr", O_RDONLY, -1, nil, nil, nil },
+	{ "ptp", O_WRONLY | O_CREAT | O_TRUNC, -1, nil, mnt_ptp, unmnt_ptp },
 	nil, 0, 0
 };
 
@@ -264,6 +266,24 @@ finddev(char *str)
 		if(strcasecmp(d->devname, str) == 0)
 			return d;
 	return nil;
+}
+
+void
+mnt(struct dev *dev, const char *path)
+{
+	dev->fd = open(path, dev->mode);
+	if(dev->fd < 0)
+		err("?F? ");
+	dev->path = strdup(path);
+}
+
+void
+unmnt(struct dev *dev)
+{
+	close(dev->fd);
+	dev->fd = -1;
+	free(dev->path);
+	dev->path = nil;
 }
 
 void
@@ -288,16 +308,9 @@ c_mount(int argc, char *argv[])
 	dev = finddev(devstr);
 	if(dev == nil)
 		err("?D? ");
-	if(dev->fd >= 0){
-		close(dev->fd);
-		dev->fd = -1;
-		free(dev->path);
-		dev->path = nil;
-	}
-	dev->fd = open(path, dev->mode);
-	if(dev->fd < 0)
-		err("?F? ");
-	dev->path = strdup(path);
+	if(dev->fd >= 0)
+		unmnt(dev);
+	mnt(dev, path);
 }
 
 void
@@ -313,12 +326,34 @@ c_unmount(int argc, char *argv[])
 	dev = finddev(devstr);
 	if(dev == nil)
 		err("?D? ");
-	if(dev->fd >= 0){
-		close(dev->fd);
-		dev->fd = -1;
-		free(dev->path);
-		dev->path = nil;
-	}
+	if(dev->fd >= 0)
+		unmnt(dev);
+}
+
+void
+c_listf(int argc, char *argv[])
+{
+/*
+	DIR *dir;
+	struct dirent *de;
+
+	printf("\r\n");
+	dir = opendir(".");
+	if(dir == nil)
+		return;
+	while(de = readdir(dir), de)
+		printf("%s\r\n", de->d_name);
+	fflush(stdout);
+	closedir(dir);
+*/
+	// the above would be nicer but the entries aren't sorted
+	int raw(int fd);
+	int reset(int fd);
+
+	reset(0);
+	putchar('\n');
+	system("ls");
+	raw(0);
 }
 
 struct {
@@ -330,6 +365,7 @@ struct {
 	{ "dump", c_dump },
 	{ "mount", c_mount },
 	{ "unmount", c_unmount },
+	{ "listf", c_listf },
 	{ nil, nil }
 };
 
@@ -408,6 +444,7 @@ _         typeout symbolic\n\
 ◊H ◊◊H    half word mode\n\
 ◊L <file> load binary file\n\
 ◊Y <file> dump to binary file\n\
+↑F        list files in current directory\n\
 ";
 
 char *colhelpstr =
@@ -416,4 +453,5 @@ char *colhelpstr =
 :dump <file>           dump to binary file\n\
 :mount <dev> <file>    mount file on device\n\
 :unmount <dev>         unmount file on device\n\
+:listf                 list files in current directory\n\
 ";
