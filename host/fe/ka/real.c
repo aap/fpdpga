@@ -678,10 +678,12 @@ svc_dis(void)
 		return;
 	if(dis_fd >= 0)
 		write(dis_fd, &pnt, 4);
+/*
 	else{
 		printf("%X\r\n", pnt);
 		fflush(stdout);
 	}
+*/
 }
 
 void

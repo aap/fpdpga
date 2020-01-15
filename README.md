@@ -18,8 +18,7 @@ operating systems running.
 
 ## Boards
 
-Right now only the DE0-Nano-SoC is supported.
-DE10-Nano support is planned.
+The supported boards are the DE0-Nano-SoC and DE10-Nano.
 Both have an ARM HPS on the same chip as the FPGA.
 
 ## Frontend

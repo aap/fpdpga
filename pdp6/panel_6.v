@@ -144,6 +144,8 @@ module panel_6(
 	/*
 	 * 340 display
 	 */
+	input wire [0:13] dis_status,
+	input wire [0:35] dis_ib,
 	input wire [0:17] dis_br,
 	input wire [0:6] dis_brm,
 	input wire [0:9] dis_x,
@@ -154,7 +156,6 @@ module panel_6(
 	input wire [0:1] dis_sz,
 	input wire [0:8] dis_flags,
 	input wire [0:4] dis_fe,
-	input wire [31:0] dis_foo,
 
 	/*
 	 * External panel
@@ -242,7 +243,9 @@ module panel_6(
 		6'o41: s_readdata <= { dis_brm, dis_y, dis_x };
 		6'o42: s_readdata <= { dis_flags, dis_s, dis_i,
 			dis_sz, dis_mode };
-		6'o43: s_readdata <= dis_foo;
+		6'o43: s_readdata <= dis_status;
+		6'o44: s_readdata <= dis_ib[0:17];
+		6'o45: s_readdata <= dis_ib[18:35];
 		default: s_readdata <= 0;
 		endcase
 	end

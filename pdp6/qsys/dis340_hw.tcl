@@ -137,6 +137,8 @@ set_interface_property dis_panel PORT_NAME_MAP ""
 set_interface_property dis_panel CMSIS_SVD_VARIABLES ""
 set_interface_property dis_panel SVD_ADDRESS_GROUP ""
 
+add_interface_port dis_panel status_ind dis_status Output 14
+add_interface_port dis_panel ib_ind dis_ib Output 36
 add_interface_port dis_panel br_ind dis_br Output 18
 add_interface_port dis_panel brm_ind dis_brm Output 7
 add_interface_port dis_panel x_ind dis_x Output 10
@@ -147,7 +149,6 @@ add_interface_port dis_panel mode_ind dis_mode Output 3
 add_interface_port dis_panel sz_ind dis_sz Output 2
 add_interface_port dis_panel flags_ind dis_flags Output 9
 add_interface_port dis_panel fe_ind dis_fe Output 5
-add_interface_port dis_panel foo_ind dis_foo Output 32
 
 
 # 

@@ -5,10 +5,23 @@
    displayName="$${FILENAME}"
    version="1.0"
    description=""
-   tags=""
+   tags="INTERNAL_COMPONENT=false"
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
+   element apr
+   {
+      datum _sortIndex
+      {
+         value = "13";
+         type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
    element button_pio
    {
       datum _sortIndex
@@ -52,7 +65,7 @@
    {
       datum _sortIndex
       {
-         value = "18";
+         value = "19";
          type = "int";
       }
       datum sopceditor_expanded
@@ -70,7 +83,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "1";
+         value = "0";
          type = "boolean";
       }
    }
@@ -79,6 +92,19 @@
       datum _sortIndex
       {
          value = "4";
+         type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
+   }
+   element fmem
+   {
+      datum _sortIndex
+      {
+         value = "17";
          type = "int";
       }
       datum sopceditor_expanded
@@ -115,25 +141,12 @@
          value = "12";
          type = "int";
       }
-      datum sopceditor_expanded
-      {
-         value = "1";
-         type = "boolean";
-      }
-   }
-   element ka10
-   {
-      datum _sortIndex
-      {
-         value = "13";
-         type = "int";
-      }
    }
    element memarbit_core
    {
       datum _sortIndex
       {
-         value = "19";
+         value = "20";
          type = "int";
       }
       datum sopceditor_expanded
@@ -142,7 +155,7 @@
          type = "boolean";
       }
    }
-   element membus_1_connect_0
+   element membus_connect
    {
       datum _sortIndex
       {
@@ -151,7 +164,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "1";
+         value = "0";
          type = "boolean";
       }
    }
@@ -159,7 +172,7 @@
    {
       datum _sortIndex
       {
-         value = "17";
+         value = "18";
          type = "int";
       }
       datum sopceditor_expanded
@@ -194,11 +207,19 @@
          type = "boolean";
       }
    }
+   element memif_fast.slave
+   {
+      datum baseAddress
+      {
+         value = "65552";
+         type = "String";
+      }
+   }
    element memory_256k
    {
       datum _sortIndex
       {
-         value = "20";
+         value = "21";
          type = "int";
       }
       datum sopceditor_expanded
@@ -214,6 +235,11 @@
          value = "14";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
+      }
    }
    element panel.slave
    {
@@ -223,20 +249,17 @@
          type = "String";
       }
    }
-   element ptp_ka10_0
+   element ptp
    {
       datum _sortIndex
       {
          value = "9";
          type = "int";
       }
-   }
-   element ptp_ka10_0.fe_s
-   {
-      datum baseAddress
+      datum sopceditor_expanded
       {
-         value = "131080";
-         type = "String";
+         value = "0";
+         type = "boolean";
       }
    }
    element ptr
@@ -246,52 +269,17 @@
          value = "10";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element ptr.fe_s
    {
       datum baseAddress
       {
          value = "131076";
-         type = "String";
-      }
-   }
-   element soc_system
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element soc_system
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element soc_system
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element soc_system
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
-         type = "String";
-      }
-   }
-   element soc_system
-   {
-      datum _originalDeviceFamily
-      {
-         value = "Cyclone V";
          type = "String";
       }
    }
@@ -442,7 +430,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "0";
+         value = "1";
          type = "boolean";
       }
    }
@@ -488,9 +476,9 @@
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
- <parameter name="device" value="5CSEMA4U23C6" />
+ <parameter name="device" value="5CSEBA6U23I7" />
  <parameter name="deviceFamily" value="Cyclone V" />
- <parameter name="deviceSpeedGrade" value="6" />
+ <parameter name="deviceSpeedGrade" value="7" />
  <parameter name="fabricMode" value="QSYS" />
  <parameter name="generateLegacySim" value="false" />
  <parameter name="generationId" value="0" />
@@ -499,7 +487,7 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="pdp10_de0.qpf" />
+ <parameter name="projectName" value="pdp6_de10.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
@@ -534,6 +522,26 @@
    dir="end" />
  <interface name="dis340" internal="dis340.externals" type="conduit" dir="end" />
  <interface name="fe_req" internal="fe_req.req" type="conduit" dir="end" />
+ <interface
+   name="fmem_externals"
+   internal="fmem.externals"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="fmem_slave_1"
+   internal="fmem.membus_slave_1"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="fmem_slave_2"
+   internal="fmem.membus_slave_2"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="fmem_slave_3"
+   internal="fmem.membus_slave_3"
+   type="conduit"
+   dir="end" />
  <interface name="hps_0_f2h_cold_reset_req" internal="hps_0.f2h_cold_reset_req" />
  <interface name="hps_0_f2h_debug_reset_req" internal="hps_0.f2h_debug_reset_req" />
  <interface name="hps_0_f2h_stm_hw_events" internal="hps_0.f2h_stm_hw_events" />
@@ -559,7 +567,7 @@
  <interface name="hps_0_uart1" internal="hps_0.uart1" type="conduit" dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
  <interface name="panel" internal="panel.externals" type="conduit" dir="end" />
- <interface name="ptp" internal="ptp_ka10_0.externals" type="conduit" dir="end" />
+ <interface name="ptp" internal="ptp.externals" type="conduit" dir="end" />
  <interface name="ptr" internal="ptr.externals" type="conduit" dir="end" />
  <interface name="reset" internal="clk.clk_in_reset" type="reset" dir="end" />
  <interface
@@ -583,6 +591,7 @@
    internal="wcsl_av.externals"
    type="conduit"
    dir="end" />
+ <module name="apr" kind="apr" version="1.0" enabled="1" />
  <module name="button_pio" kind="altera_avalon_pio" version="18.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="true" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -606,6 +615,16 @@
  <module name="cmem" kind="core256k" version="1.0" enabled="1" />
  <module name="dis340" kind="dis340" version="1.0" enabled="1" />
  <module name="fe_req" kind="fe_req" version="1.0" enabled="1" />
+ <module name="fmem" kind="fast162_dp" version="1.0" enabled="1">
+  <parameter name="fmc_p0_sel" value="1" />
+  <parameter name="fmc_p1_sel" value="0" />
+  <parameter name="fmc_p2_sel" value="0" />
+  <parameter name="fmc_p3_sel" value="0" />
+  <parameter name="memsel_p0" value="0" />
+  <parameter name="memsel_p1" value="0" />
+  <parameter name="memsel_p2" value="0" />
+  <parameter name="memsel_p3" value="0" />
+ </module>
  <module name="hps_0" kind="altera_hps" version="18.0" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
   <parameter name="ABS_RAM_MEM_INIT_FILENAME" value="meminit" />
@@ -622,7 +641,7 @@
   <parameter name="ALTMEMPHY_COMPATIBLE_MODE" value="false" />
   <parameter name="AP_MODE" value="false" />
   <parameter name="AP_MODE_EN" value="0" />
-  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
   <parameter name="AUTO_PD_CYCLES" value="0" />
   <parameter name="AUTO_POWERDN_EN" value="false" />
   <parameter name="AVL_DATA_WIDTH_PORT" value="32,32,32,32,32,32" />
@@ -1086,7 +1105,7 @@
   <parameter name="desired_sdmmc_clk_mhz" value="200.0" />
   <parameter name="desired_spi_m_clk_mhz" value="200.0" />
   <parameter name="desired_usb_mp_clk_mhz" value="200.0" />
-  <parameter name="device_name" value="5CSEMA4U23C6" />
+  <parameter name="device_name" value="5CSEBA6U23I7" />
   <parameter name="device_pll_info_manual">{320000000 1600000000} {320000000 1000000000} {800000000 400000000 400000000}</parameter>
   <parameter name="eosc1_clk_mhz" value="25.0" />
   <parameter name="eosc2_clk_mhz" value="25.0" />
@@ -1137,11 +1156,10 @@
   <parameter name="use_default_mpu_clk" value="true" />
  </module>
  <module name="iobus_connect" kind="iobus_6_connect" version="1.0" enabled="1" />
- <module name="ka10" kind="ka10" version="1.0" enabled="1" />
  <module name="memarbit_core" kind="memarbit" version="1.0" enabled="1" />
  <module
-   name="membus_1_connect_0"
-   kind="membus_1_connect"
+   name="membus_connect"
+   kind="membus_2_connect"
    version="1.0"
    enabled="1" />
  <module name="memif_core" kind="memif" version="1.0" enabled="1" />
@@ -1149,9 +1167,9 @@
  <module name="memory_256k" kind="memory_256k" version="1.0" enabled="1">
   <parameter name="base_addr" value="805306368" />
  </module>
- <module name="panel" kind="panel_ka" version="1.0" enabled="1" />
- <module name="ptp_ka10_0" kind="ptp_ka10" version="1.0" enabled="1" />
- <module name="ptr" kind="ptr_ka10" version="1.0" enabled="1" />
+ <module name="panel" kind="panel_6" version="1.0" enabled="1" />
+ <module name="ptp" kind="ptp" version="1.0" enabled="1" />
+ <module name="ptr" kind="ptr" version="1.0" enabled="1" />
  <module name="switch_pio" kind="altera_avalon_pio" version="18.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -1166,10 +1184,28 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="4" />
  </module>
- <module name="tty" kind="tty_ka10" version="1.0" enabled="1" />
+ <module name="tty" kind="tty" version="1.0" enabled="1" />
  <module name="wcsl420" kind="wcsl420" version="1.0" enabled="1" />
  <module name="wcsl724" kind="wcsl724" version="1.0" enabled="1" />
  <module name="wcsl_av" kind="wcsl_av" version="1.0" enabled="1" />
+ <connection
+   kind="avalon"
+   version="18.0"
+   start="hps_0.h2f_lw_axi_master"
+   end="ptr.fe_s">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00020004" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="18.0"
+   start="hps_0.h2f_lw_axi_master"
+   end="ptp.fe_s">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00020008" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
  <connection
    kind="avalon"
    version="18.0"
@@ -1192,18 +1228,9 @@
    kind="avalon"
    version="18.0"
    start="hps_0.h2f_lw_axi_master"
-   end="ptr.fe_s">
+   end="button_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020004" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.0"
-   start="hps_0.h2f_lw_axi_master"
-   end="ptp_ka10_0.fe_s">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020008" />
+  <parameter name="baseAddress" value="0x000100c0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1219,15 +1246,6 @@
    kind="avalon"
    version="18.0"
    start="hps_0.h2f_lw_axi_master"
-   end="button_pio.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000100c0" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.0"
-   start="hps_0.h2f_lw_axi_master"
    end="memif_core.slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00010000" />
@@ -1237,9 +1255,9 @@
    kind="avalon"
    version="18.0"
    start="hps_0.h2f_lw_axi_master"
-   end="fe_req.slave">
+   end="memif_fast.slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020000" />
+  <parameter name="baseAddress" value="0x00010010" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1255,9 +1273,9 @@
    kind="avalon"
    version="18.0"
    start="hps_0.h2f_lw_axi_master"
-   end="memif_fast.slave">
+   end="fe_req.slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00010010" />
+  <parameter name="baseAddress" value="0x00020000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1269,35 +1287,47 @@
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
- <connection kind="clock" version="18.0" start="clk.clk" end="switch_pio.clk" />
  <connection kind="clock" version="18.0" start="clk.clk" end="button_pio.clk" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="switch_pio.clk" />
  <connection kind="clock" version="18.0" start="clk.clk" end="memarbit_core.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="memif_core.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="fe_req.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="ka10.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="panel.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="fmem.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="memif_fast.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="panel.clock" />
  <connection
    kind="clock"
    version="18.0"
    start="clk.clk"
-   end="membus_1_connect_0.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="dis340.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="iobus_connect.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="wcsl_av.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="wcsl724.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="wcsl420.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="memory_256k.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="cmem.clock" />
+   end="membus_connect.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="apr.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="tty.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="ptr.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="ptp_ka10_0.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="fe_req.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="ptp.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="dis340.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="iobus_connect.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="wcsl420.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="wcsl724.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="wcsl_av.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="memory_256k.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="cmem.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="hps_0.f2h_axi_clock" />
  <connection
    kind="clock"
    version="18.0"
    start="clk.clk"
    end="hps_0.h2f_lw_axi_clock" />
+ <connection
+   kind="conduit"
+   version="18.0"
+   start="apr.apr_panel"
+   end="panel.apr_panel">
+  <parameter name="endPort" value="" />
+  <parameter name="endPortLSB" value="0" />
+  <parameter name="startPort" value="" />
+  <parameter name="startPortLSB" value="0" />
+  <parameter name="width" value="0" />
+ </connection>
  <connection
    kind="conduit"
    version="18.0"
@@ -1313,7 +1343,7 @@
    kind="conduit"
    version="18.0"
    start="iobus_connect.iobus_master"
-   end="ka10.iobus_master">
+   end="apr.iobus_master">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1323,8 +1353,8 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="tty.iobus_slave"
-   end="iobus_connect.iobus_slave0">
+   start="wcsl724.iobus_slave"
+   end="iobus_connect.iobus_slave5">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1334,8 +1364,8 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="ptp_ka10_0.iobus_slave"
-   end="iobus_connect.iobus_slave2">
+   start="iobus_connect.iobus_slave0"
+   end="tty.iobus_slave">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1347,6 +1377,17 @@
    version="18.0"
    start="iobus_connect.iobus_slave1"
    end="ptr.iobus_slave">
+  <parameter name="endPort" value="" />
+  <parameter name="endPortLSB" value="0" />
+  <parameter name="startPort" value="" />
+  <parameter name="startPortLSB" value="0" />
+  <parameter name="width" value="0" />
+ </connection>
+ <connection
+   kind="conduit"
+   version="18.0"
+   start="iobus_connect.iobus_slave2"
+   end="ptp.iobus_slave">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1378,30 +1419,8 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="iobus_connect.iobus_slave5"
-   end="wcsl724.iobus_slave">
-  <parameter name="endPort" value="" />
-  <parameter name="endPortLSB" value="0" />
-  <parameter name="startPort" value="" />
-  <parameter name="startPortLSB" value="0" />
-  <parameter name="width" value="0" />
- </connection>
- <connection
-   kind="conduit"
-   version="18.0"
-   start="panel.ka_panel"
-   end="ka10.ka10_panel">
-  <parameter name="endPort" value="" />
-  <parameter name="endPortLSB" value="0" />
-  <parameter name="startPort" value="" />
-  <parameter name="startPortLSB" value="0" />
-  <parameter name="width" value="0" />
- </connection>
- <connection
-   kind="conduit"
-   version="18.0"
    start="memif_fast.mem_master"
-   end="ka10.fm_slave">
+   end="fmem.mem_slave">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1422,17 +1441,6 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="memarbit_core.mem_master"
-   end="memory_256k.slave">
-  <parameter name="endPort" value="" />
-  <parameter name="endPortLSB" value="0" />
-  <parameter name="startPort" value="" />
-  <parameter name="startPortLSB" value="0" />
-  <parameter name="width" value="0" />
- </connection>
- <connection
-   kind="conduit"
-   version="18.0"
    start="memarbit_core.mem_slave1"
    end="memif_core.mem_master">
   <parameter name="endPort" value="" />
@@ -1444,8 +1452,8 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="ka10.membus_master"
-   end="membus_1_connect_0.membus_master">
+   start="membus_connect.membus_master"
+   end="apr.membus_master">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1455,8 +1463,8 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="cmem.membus_slave_0"
-   end="membus_1_connect_0.membus_slave0">
+   start="membus_connect.membus_slave0"
+   end="cmem.membus_slave_0">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1466,8 +1474,19 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="ptp_ka10_0.ptp_panel"
-   end="panel.ptp_panel">
+   start="membus_connect.membus_slave1"
+   end="fmem.membus_slave_0">
+  <parameter name="endPort" value="" />
+  <parameter name="endPortLSB" value="0" />
+  <parameter name="startPort" value="" />
+  <parameter name="startPortLSB" value="0" />
+  <parameter name="width" value="0" />
+ </connection>
+ <connection
+   kind="conduit"
+   version="18.0"
+   start="panel.ptp_panel"
+   end="ptp.ptp_panel">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1479,6 +1498,17 @@
    version="18.0"
    start="ptr.ptr_panel"
    end="panel.ptr_panel">
+  <parameter name="endPort" value="" />
+  <parameter name="endPortLSB" value="0" />
+  <parameter name="startPort" value="" />
+  <parameter name="startPortLSB" value="0" />
+  <parameter name="width" value="0" />
+ </connection>
+ <connection
+   kind="conduit"
+   version="18.0"
+   start="memory_256k.slave"
+   end="memarbit_core.mem_master">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
   <parameter name="startPort" value="" />
@@ -1500,6 +1530,11 @@
    kind="reset"
    version="18.0"
    start="clk.clk_reset"
+   end="button_pio.reset" />
+ <connection
+   kind="reset"
+   version="18.0"
+   start="clk.clk_reset"
    end="switch_pio.reset" />
  <connection
    kind="reset"
@@ -1511,46 +1546,40 @@
    version="18.0"
    start="clk.clk_reset"
    end="memif_core.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="fe_req.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="ka10.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="panel.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="fmem.reset" />
  <connection
    kind="reset"
    version="18.0"
    start="clk.clk_reset"
    end="memif_fast.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="panel.reset" />
  <connection
    kind="reset"
    version="18.0"
    start="clk.clk_reset"
-   end="membus_1_connect_0.reset" />
+   end="membus_connect.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="apr.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="tty.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptr.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="fe_req.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptp.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="dis340.reset" />
  <connection
    kind="reset"
    version="18.0"
    start="clk.clk_reset"
    end="iobus_connect.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="wcsl_av.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="wcsl420.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="wcsl724.reset" />
- <connection
-   kind="reset"
-   version="18.0"
-   start="clk.clk_reset"
-   end="button_pio.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="wcsl_av.reset" />
  <connection
    kind="reset"
    version="18.0"
    start="clk.clk_reset"
    end="memory_256k.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="cmem.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="tty.reset" />
- <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptr.reset" />
- <connection
-   kind="reset"
-   version="18.0"
-   start="clk.clk_reset"
-   end="ptp_ka10_0.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
+ <interconnectRequirement for="memif_d_1.master" name="qsys_mm.security" value="SECURE" />
+ <interconnectRequirement for="memif_d_1.slave" name="qsys_mm.security" value="NON_SECURE" />
 </system>

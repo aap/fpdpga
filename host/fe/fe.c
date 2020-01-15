@@ -568,6 +568,7 @@ threadmain(int argc, char *argv[])
 
 	init6();
 	initcrt("soma");
+//	initcrt("10.24.10.123");
 //	initnetmem("10.0.0.222", 10006);
 
 	raw(0);

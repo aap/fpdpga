@@ -143,14 +143,30 @@ module panel_ka(
 	input wire [9:0] tty_status,
 
 	/* PTR */
-	output reg ptr_key_tape_feed,
+	output wire ptr_key_tape_feed,
 	input wire [35:0] ptr,
 	input wire [11:0] ptr_status,
 
-	/* PTP - currently from 6 */
-	output reg ptp_key_tape_feed,
+	/* PTP */
+	output wire ptp_key_tape_feed,
 	input wire [7:0] ptp,
 	input wire [6:0] ptp_status,	// also includes motor on
+
+	/*
+	 * 340 display
+	 */
+	input wire [0:13] dis_status,
+	input wire [0:35] dis_ib,
+	input wire [0:17] dis_br,
+	input wire [0:6] dis_brm,
+	input wire [0:9] dis_x,
+	input wire [0:9] dis_y,
+	input wire [1:4] dis_s,
+	input wire [0:2] dis_i,
+	input wire [0:2] dis_mode,
+	input wire [0:1] dis_sz,
+	input wire [0:8] dis_flags,
+	input wire [0:4] dis_fe,
 
 	/*
 	 * External panel
@@ -161,6 +177,10 @@ module panel_ka(
 );
 
 	wire ext_sw_power = switches[0];
+
+	// TODO
+	assign ptr_key_tape_feed = 0;
+	assign ptp_key_tape_feed = 0;
 
 	always @(*) begin
 		case(switches[3:1])
@@ -231,6 +251,13 @@ module panel_ka(
 		6'o42: s_readdata <= ptr_status;
 		6'o43: s_readdata <= ptr[35:18];
 		6'o44: s_readdata <= ptr[17:0];
+		6'o45: s_readdata <= dis_br;
+		6'o46: s_readdata <= { dis_brm, dis_y, dis_x };
+		6'o47: s_readdata <= { dis_flags, dis_s, dis_i,
+			dis_sz, dis_mode };
+		6'o50: s_readdata <= dis_status;
+		6'o51: s_readdata <= dis_ib[0:17];
+		6'o52: s_readdata <= dis_ib[18:35];
 		default: s_readdata <= 0;
 		endcase
 	end

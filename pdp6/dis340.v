@@ -20,6 +20,8 @@ module dis340(
 	output wire iobus_rdi_data,	// unused on 6
 
 	/* Indicators */
+	output wire [0:13] status_ind,
+	output wire [0:35] ib_ind,
 	output wire [0:17] br_ind,
 	output wire [0:6] brm_ind,
 	output wire [0:9] x_ind,
@@ -30,7 +32,6 @@ module dis340(
 	output wire [0:1] sz_ind,
 	output wire [0:8] flags_ind,
 	output wire [0:4] fe_ind,
-	output wire [31:0] foo_ind,
 
 	/* Avalon slave */
 	input wire s_read,
@@ -41,6 +42,12 @@ module dis340(
 	assign iobus_dr_split = 0;
 	assign iobus_rdi_data = 0;
 
+	assign status_ind = {
+		dis_ibc,
+		edge_flag_vert, lp_flag, edge_flag_horiz,
+		stop_inter, done_flag, 1'b0,
+		dis_pia_spec, dis_pia_data };
+	assign ib_ind = dis_ib;
 	assign br_ind = br;
 	assign brm_ind = brm;
 	assign x_ind = x;
@@ -520,21 +527,14 @@ module dis340(
 
 	/* FE interface */
 	assign fe_data_rq = fe_req;
-//	assign s_readdata = fe_data;
 	assign s_readdata = { fe_req, 8'b0, i, y, x };
 	reg fe_req;
 	reg fe_rs;
-//	reg [31:0] fe_data;
 	wire int_start;
 	wire intdly1_pulse, intdly2_pulse, intdly3_pulse;
 	reg intdly1_sync, intdly2_sync, intdly3_sync;
 
 	assign fe_ind = { intdly1_sync, intdly2_sync, intdly3_sync, fe_rs, fe_req };
-
-	reg [29:0] foo;
-	always @(posedge clk)
-		foo <= rom_end[{cg_so, cg_char}];
-	assign foo_ind = foo;
 
 	wire fe_reset = reset | iob_reset;
 
@@ -554,12 +554,10 @@ module dis340(
 			if(int_start & intensify) begin
 				fe_req <= 1;
 				fe_rs <= 0;
-			//	fe_data <= { 1'b1, 8'b0, i, y, x };
 			end
 			if(int_start & ~intensify | s_read) begin
 				fe_req <= 0;
 				fe_rs <= 1;
-			//	fe_data <= 0;
 			end
 
 			if(intdly1_pulse)

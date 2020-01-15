@@ -223,7 +223,7 @@
          type = "String";
       }
    }
-   element ptp_ka10_0
+   element ptp
    {
       datum _sortIndex
       {
@@ -231,7 +231,7 @@
          type = "int";
       }
    }
-   element ptp_ka10_0.fe_s
+   element ptp.fe_s
    {
       datum baseAddress
       {
@@ -252,6 +252,14 @@
       datum baseAddress
       {
          value = "131076";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
          type = "String";
       }
    }
@@ -488,9 +496,9 @@
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
- <parameter name="device" value="5CSEMA4U23C6" />
+ <parameter name="device" value="5CSEBA6U23I7" />
  <parameter name="deviceFamily" value="Cyclone V" />
- <parameter name="deviceSpeedGrade" value="6" />
+ <parameter name="deviceSpeedGrade" value="7" />
  <parameter name="fabricMode" value="QSYS" />
  <parameter name="generateLegacySim" value="false" />
  <parameter name="generationId" value="0" />
@@ -499,7 +507,7 @@
  <parameter name="hideFromIPCatalog" value="false" />
  <parameter name="lockedInterfaceDefinition" value="" />
  <parameter name="maxAdditionalLatency" value="1" />
- <parameter name="projectName" value="pdp10_de0.qpf" />
+ <parameter name="projectName" value="ka10_de10.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="0" />
  <parameter name="testBenchDutName" value="" />
@@ -545,6 +553,9 @@
    dir="start" />
  <interface name="hps_0_h2f_user0_clock" internal="hps_0.h2f_user0_clock" />
  <interface name="hps_0_hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
+ <interface name="hps_0_i2c0" internal="hps_0.i2c0" />
+ <interface name="hps_0_i2c0_clk" internal="hps_0.i2c0_clk" />
+ <interface name="hps_0_i2c0_scl_in" internal="hps_0.i2c0_scl_in" />
  <interface name="hps_0_i2c2" internal="hps_0.i2c2" type="conduit" dir="end" />
  <interface
    name="hps_0_i2c2_clk"
@@ -559,7 +570,7 @@
  <interface name="hps_0_uart1" internal="hps_0.uart1" type="conduit" dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
  <interface name="panel" internal="panel.externals" type="conduit" dir="end" />
- <interface name="ptp" internal="ptp_ka10_0.externals" type="conduit" dir="end" />
+ <interface name="ptp" internal="ptp.externals" type="conduit" dir="end" />
  <interface name="ptr" internal="ptr.externals" type="conduit" dir="end" />
  <interface name="reset" internal="clk.clk_in_reset" type="reset" dir="end" />
  <interface
@@ -622,7 +633,7 @@
   <parameter name="ALTMEMPHY_COMPATIBLE_MODE" value="false" />
   <parameter name="AP_MODE" value="false" />
   <parameter name="AP_MODE_EN" value="0" />
-  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
   <parameter name="AUTO_PD_CYCLES" value="0" />
   <parameter name="AUTO_POWERDN_EN" value="false" />
   <parameter name="AVL_DATA_WIDTH_PORT" value="32,32,32,32,32,32" />
@@ -1086,7 +1097,7 @@
   <parameter name="desired_sdmmc_clk_mhz" value="200.0" />
   <parameter name="desired_spi_m_clk_mhz" value="200.0" />
   <parameter name="desired_usb_mp_clk_mhz" value="200.0" />
-  <parameter name="device_name" value="5CSEMA4U23C6" />
+  <parameter name="device_name" value="5CSEBA6U23I7" />
   <parameter name="device_pll_info_manual">{320000000 1600000000} {320000000 1000000000} {800000000 400000000 400000000}</parameter>
   <parameter name="eosc1_clk_mhz" value="25.0" />
   <parameter name="eosc2_clk_mhz" value="25.0" />
@@ -1150,7 +1161,7 @@
   <parameter name="base_addr" value="805306368" />
  </module>
  <module name="panel" kind="panel_ka" version="1.0" enabled="1" />
- <module name="ptp_ka10_0" kind="ptp_ka10" version="1.0" enabled="1" />
+ <module name="ptp" kind="ptp_ka10" version="1.0" enabled="1" />
  <module name="ptr" kind="ptr_ka10" version="1.0" enabled="1" />
  <module name="switch_pio" kind="altera_avalon_pio" version="18.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
@@ -1201,7 +1212,7 @@
    kind="avalon"
    version="18.0"
    start="hps_0.h2f_lw_axi_master"
-   end="ptp_ka10_0.fe_s">
+   end="ptp.fe_s">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00020008" />
   <parameter name="defaultConnection" value="false" />
@@ -1291,7 +1302,7 @@
  <connection kind="clock" version="18.0" start="clk.clk" end="cmem.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="tty.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="ptr.clock" />
- <connection kind="clock" version="18.0" start="clk.clk" end="ptp_ka10_0.clock" />
+ <connection kind="clock" version="18.0" start="clk.clk" end="ptp.clock" />
  <connection kind="clock" version="18.0" start="clk.clk" end="hps_0.f2h_axi_clock" />
  <connection
    kind="clock"
@@ -1334,7 +1345,7 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="ptp_ka10_0.iobus_slave"
+   start="ptp.iobus_slave"
    end="iobus_connect.iobus_slave2">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
@@ -1466,7 +1477,7 @@
  <connection
    kind="conduit"
    version="18.0"
-   start="ptp_ka10_0.ptp_panel"
+   start="ptp.ptp_panel"
    end="panel.ptp_panel">
   <parameter name="endPort" value="" />
   <parameter name="endPortLSB" value="0" />
@@ -1546,11 +1557,7 @@
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="cmem.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="tty.reset" />
  <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptr.reset" />
- <connection
-   kind="reset"
-   version="18.0"
-   start="clk.clk_reset"
-   end="ptp_ka10_0.reset" />
+ <connection kind="reset" version="18.0" start="clk.clk_reset" end="ptp.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
 </system>
