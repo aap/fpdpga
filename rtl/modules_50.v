@@ -119,6 +119,20 @@ module clk50khz(
 			cnt <= cnt + 10'b1;
 endmodule
 
+// input 50mhz, output 120khz
+module clk120khz(
+	input wire clk,
+	output wire outclk
+);
+	reg [8:0] cnt = 0;
+	assign outclk = cnt == 416;
+	always @(posedge clk)
+		if(outclk)
+			cnt <= 0;
+		else
+			cnt <= cnt + 9'b1;
+endmodule
+
 // input 50mhz, output 500khz
 module clk500khz(
 	input wire clk,
@@ -199,20 +213,30 @@ endmodule
 module dcd(input clk, input reset, input p, input l, output q);
 	reg [1:0] x;
 	reg [1:0] init = 0;
+	reg [1:0] ll;
 	always @(posedge clk or posedge reset)
 		if(reset)
 			init <= 0;
 		else begin
 			x <= { x[0], p };
+			// TODO: find out if this breaks anything
+			ll <= { ll[0], l };
 			init <= { init[0], 1'b1 };
 		end
-	assign q = l & (&init) & x[0] & !x[1];
+	assign q = ll[1] & (&init) & x[0] & !x[1];
 endmodule
 
 /* Pulse Amplifier behind a DCD
  * Really a DCD only because we don't actually have pulses. */
 module pa_dcd(input clk, input reset, input p, input l, output q);
 	dcd dcd(clk, reset, p, l, q);
+endmodule
+
+module pa_dcd_p(input clk, input reset, input p1, input p2, input l, output q);
+	wire q1, q2;
+	dcd dcd1(clk, reset, p1, 1'b1, q1);
+	dcd dcd2(clk, reset, p2, l, q2);
+	assign q = q1 | q2;
 endmodule
 
 module pa_dcd2(input clk, input reset,
@@ -223,6 +247,18 @@ module pa_dcd2(input clk, input reset,
 	dcd dcd1(clk, reset, p1, l1, q1);
 	dcd dcd2(clk, reset, p2, l2, q2);
 	assign q = q1 | q2;
+endmodule
+
+module pa_dcd2_p(input clk, input reset,
+		input p1,
+		input p2, input l2,
+		input p3, input l3,
+		output q);
+	wire q1, q2, q3;
+	dcd dcd1(clk, reset, p1, 1'b1, q1);
+	dcd dcd2(clk, reset, p2, l2, q2);
+	dcd dcd3(clk, reset, p3, l3, q3);
+	assign q = q1 | q2 | q3;
 endmodule
 
 module pa_dcd4(input clk, input reset,

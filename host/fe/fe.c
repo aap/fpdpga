@@ -567,7 +567,9 @@ threadmain(int argc, char *argv[])
 	word t;
 
 	init6();
-	initcrt("soma");
+	if(argc > 1)
+		initcrt(argv[1]);
+
 //	initcrt("10.24.10.123");
 //	initnetmem("10.0.0.222", 10006);
 

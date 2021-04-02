@@ -2,7 +2,7 @@ module ptr_ka10(
 	input wire clk,
 	input wire reset,
 
-        /* IO bus */
+	/* IO bus */
 	input  wire iobus_iob_poweron,
 	input  wire iobus_iob_reset,
 	input  wire iobus_datao_clear,
@@ -11,15 +11,15 @@ module ptr_ka10(
 	input  wire iobus_cono_set,
 	input  wire iobus_iob_fm_datai,
 	input  wire iobus_iob_fm_status,
-	input  wire iobus_rdi_pulse,    // unused on 6
+	input  wire iobus_rdi_pulse,	// unused on 6
 	input  wire [3:9]  iobus_ios,
 	input  wire [0:35] iobus_iob_in,
 	output wire [1:7]  iobus_pi_req,
 	output wire [0:35] iobus_iob_out,
 	output wire iobus_dr_split,
-	output wire iobus_rdi_data,     // unused on 6
+	output wire iobus_rdi_data,	// unused on 6
 
-        /* Console panel */
+	/* Console panel */
 	input wire key_tape_feed,
 	output wire [35:0] ptr_ind,
 	output wire [11:0] status_ind,

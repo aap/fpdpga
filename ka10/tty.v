@@ -82,8 +82,8 @@ module tty_ka10(
 	wire tti_shift;
 
 	wire tto_clk_110, tto_clk_150;
-	clk110hz clk0(clk, 1, tto_clk_110);
-	clk150hz clk1(clk, 1, tto_clk_150);
+	clk110hz clk0(clk, 1'b1, tto_clk_110);
+	clk150hz clk1(clk, 1'b1, tto_clk_150);
 	wire tti_clk_110, tti_clk_150;
 	clk110hz clk2(clk, tti_active, tti_clk_110);
 	clk150hz clk3(clk, tti_active, tti_clk_150);

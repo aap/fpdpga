@@ -3,6 +3,7 @@
 
 #include "threading.h"
 #include "util.h"
+#include "args.h"
 
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -10,6 +11,8 @@ typedef uint32_t u32, hword;
 typedef uint64_t word;
 #define RT 0777777
 #define LT 0777777000000
+
+int winsize = 1024;
 
 void
 err(char *fmt, ...)
@@ -389,8 +392,9 @@ updatejoy(Joy *j)
 {
 	u32 joy;
 	joy = j->b | j->i<<24;
+	// TODO: this causes flickering for some reason
 	write(sock, &joy, 4);
-	printf("%d %X\n", j->i, joy);
+//	printf("%d %X\n", j->i, joy);
 }
 
 #define KEY1(m) joys[0].b |= (m); break
@@ -585,13 +589,28 @@ joyinit(void)
 	}
 }
 
+int penstate;
+
+void
+mouse(int button, int state, int x, int y)
+{
+	u32 pen = 0x80000000;
+	pen |= x;
+	pen |= y<<10;
+	if(state) pen |= 1<<20;
+	if(state || penstate != !!state)
+		write(sock, &pen, 4);
+	penstate = !!state;
+//	printf("%d %d %d %d\n", button, state, x, y);
+}
+
 void
 winev(SDL_WindowEvent *we)
 {
 	switch(we->event){
 	case SDL_WINDOWEVENT_RESIZED:
-//		texrect.x = (we->data1-1024)/2;
-//		texrect.y = (we->data2-1024)/2;
+//		texrect.x = (we->data1-winsize)/2;
+//		texrect.y = (we->data2-winsize)/2;
 		resize();
 	//	printf("res %d %d\n", we->data1, we->data2);
 		break;
@@ -603,6 +622,8 @@ renderthread(void *arg)
 {
 	CRT *crt;
 	SDL_Event ev;
+	SDL_MouseButtonEvent *mbev;
+	SDL_MouseMotionEvent *mmev;
 	SDL_Texture *tex;
 
 	crt = arg;
@@ -615,15 +636,15 @@ renderthread(void *arg)
 
 	joyinit();
 
-	if(SDL_CreateWindowAndRenderer(1024, 1024, 0, &window, &renderer) < 0)
+	if(SDL_CreateWindowAndRenderer(winsize, winsize, 0, &window, &renderer) < 0)
 		err("SDL_CreateWindowAndRenderer() failed: %s\n", SDL_GetError());
 	tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
 		SDL_TEXTUREACCESS_STREAMING, 1024, 1024);
 	SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND);
 	texrect.x = 0;
 	texrect.y = 0;
-	texrect.w = 1024;
-	texrect.h = 1024;
+	texrect.w = winsize;
+	texrect.h = winsize;
 
 	SDL_ShowCursor(SDL_DISABLE);
 
@@ -654,6 +675,16 @@ renderthread(void *arg)
 				// ev.jdevice SDL_JoyDeviceEvent
 				break;
 			case SDL_JOYDEVICEREMOVED:
+				break;
+
+			case SDL_MOUSEMOTION:
+				mmev = (SDL_MouseMotionEvent*)&ev;
+				mouse(0, mmev->state, mmev->x, mmev->y);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+				mbev = (SDL_MouseButtonEvent*)&ev;
+				mouse(mbev->button, mbev->state, mbev->x, mbev->y);
 				break;
 			}
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
@@ -689,13 +720,32 @@ startcrt(int fd, void *arg)
 	sock = fd;
 	threadcreate(pixelthread, &CRT_);
 	threadcreate(renderthread, &CRT_);
-for(;;);
+for(;;) sleep(1);
 	exit(0);
+}
+
+char *argv0;
+
+void
+usage(void)
+{
+	fprintf(stderr, "usage: %s [-p port] [-s winsize]\n", argv0);
+	exit(1);
 }
 
 int
 threadmain(int argc, char *argv[])
 {
-	serve(3400, startcrt, nil);
+	int port = 3400;
+	ARGBEGIN{
+	case 'p':
+		port = atoi(EARGF(usage()));
+		break;
+	case 's':
+		winsize = atoi(EARGF(usage()));
+		break;
+	}ARGEND;
+
+	serve(port, startcrt, nil);
 	return 0;
 }

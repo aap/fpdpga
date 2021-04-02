@@ -236,8 +236,8 @@ endmodule
 //`define TESTKEY pdp10.key_exa_sw
 //`define TESTKEY pdp10.key_dep_sw
 //`define TESTKEY pdp10.key_exe_sw
-//`define TESTKEY pdp10.key_sta_sw
-`define TESTKEY pdp10.key_rdi_sw
+`define TESTKEY pdp10.key_sta_sw
+//`define TESTKEY pdp10.key_rdi_sw
 //`define TESTKEY pdp10.key_ex_nxt_sw
 //`define TESTKEY pdp10.key_cont_sw
 //`define TESTKEY pdp10.key_stop_sw
@@ -318,8 +318,8 @@ module test;
 		end
 	endfunction
 
-`include "diag_ka10.inc"
-//`include "test_ka10.inc"
+//`include "diag_ka10.inc"
+`include "test_ka10.inc"
 //`include "test_ka10_arith.inc"
 //`include "test_ka10_fp.inc"
 //`include "test_ka10_dpy.inc"
@@ -336,7 +336,7 @@ module test;
 //		pdp10.key_repeat_sw = 1;
 //		pdp10.key_adr_stop = 1;
 
-		#96 `TESTKEY = 1;
+		#1000 `TESTKEY = 1;
 //		pdp10.ka10.pi_act = 1;
 //		pdp10.ka10.pir = 7'b0000010;
 
