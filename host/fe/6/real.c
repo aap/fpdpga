@@ -84,14 +84,14 @@ enum
 
 	REG6_DIS1 = 040,
 	REG6_DIS2 = 041,
-	REG6_DIS3 = 042,
+	REG6_DIS3 = 042
 };
 
 enum {
 	FEREG_REQ = 0,
 	FEREG_PTR,
 	FEREG_PTP,
-	FEREG_DIS
+	FEREG_DIS,
 };
 
 
@@ -690,6 +690,10 @@ svc_dis(void)
 	}
 */
 }
+
+// not yet
+void mnt_dt(struct dev *dev) {}
+void unmnt_dt(struct dev *dev) {}
 
 void
 fe_svc(void)

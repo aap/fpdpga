@@ -27,7 +27,8 @@
 	X("PTR.PTR", PTR_PTR)\
 	X("PTR.ST", PTR_ST)\
 	X("PTR.FE", PTR_FE)\
-	X("FE.REQ", FE_REQ)
+	X("FE.REQ", FE_REQ)\
+	X("TU56.SW", TU56_SW)
 #else
 #define PDP_REGS_TEST
 #endif

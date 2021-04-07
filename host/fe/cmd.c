@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 #define MAXOPS 20
 
@@ -255,6 +256,7 @@ c_loadsav(int argc, char *argv[])
 struct dev devtab[] = {
 	{ "ptr", O_RDONLY, -1, nil, nil, nil },
 	{ "ptp", O_WRONLY | O_CREAT | O_TRUNC, -1, nil, mnt_ptp, unmnt_ptp },
+	{ "dt0", O_RDWR | O_CREAT, -1, nil, mnt_dt, unmnt_dt },
 	nil, 0, 0
 };
 
@@ -271,15 +273,23 @@ finddev(char *str)
 void
 mnt(struct dev *dev, const char *path)
 {
+	struct stat statbuf;
+	int creating = stat(path, &statbuf) < 0;
 	dev->fd = open(path, dev->mode);
 	if(dev->fd < 0)
 		err("?F? ");
+	if(creating)
+		printf("creating %s\r\n", path);
 	dev->path = strdup(path);
+	if(dev->mntcb)
+		dev->mntcb(dev);
 }
 
 void
 unmnt(struct dev *dev)
 {
+	if(dev->unmntcb)
+		dev->unmntcb(dev);
 	close(dev->fd);
 	dev->fd = -1;
 	free(dev->path);

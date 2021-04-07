@@ -97,7 +97,9 @@ enum {
 	FEREG_REQ = 0,
 	FEREG_PTR,
 	FEREG_PTP,
-	FEREG_DIS
+	FEREG_DIS,
+	FEREG_TU56_DATA,	// RW
+	FEREG_TU56_SW	// W
 };
 
 
@@ -158,6 +160,10 @@ deposit(hword a, word w)
 
 	case PTR_FE:
 		h2f_fe[FEREG_PTR] = w;
+		break;
+
+	case TU56_SW:
+		h2f_fe[FEREG_TU56_SW] = w;
 		break;
 #endif
 	}
@@ -258,6 +264,10 @@ examine(hword a)
 		return w;
 	case PTR_ST:
 		return h2f_apr[REG_PTR] & 07777;
+
+	case TU56_SW:
+		return h2f_fe[FEREG_TU56_SW];
+		break;
 
 	case FE_REQ:
 		return h2f_fe[FEREG_REQ];
@@ -686,6 +696,70 @@ svc_dis(void)
 */
 }
 
+// transport
+struct DECtape {
+	u8 *start;
+	u8 *cur;
+	u8 *end;
+	u32 size;
+};
+// 587 blocks, 2700 words start/end, 1000 just to be safe
+#define DTSIZE ((578 * 1596) + 2700*24 + 1000)
+struct DECtape dt0;
+void mnt_dt(struct dev *dev)
+{
+	printf("mount dt\r\n");
+	struct DECtape *dt = &dt0;
+
+	dt->size = lseek(dev->fd, 0, SEEK_END);
+	if(dt->size < 6)
+		dt->size = DTSIZE;
+	dt->start = malloc(dt->size);
+	dt->cur = dt->start;
+	dt->end = dt->start + dt->size;
+	lseek(dev->fd, 0, SEEK_SET);
+	read(dev->fd, dt->start, dt->size);
+}
+void unmnt_dt(struct dev *dev)
+{
+	printf("unmount dt\r\n");
+	struct DECtape *dt = &dt0;
+
+	lseek(dev->fd, 0, SEEK_SET);
+	write(dev->fd, dt->start, dt->size);
+}
+
+static void
+svc_dt(u32 req)
+{
+	struct DECtape *dt = &dt0;
+
+	// 1	wr rq
+	// 2	rd rq
+	// 4	reverse
+	// 8	move
+	if(req & 1){
+		h2f_fe[FEREG_TU56_DATA] = *dt->cur & 017;
+//		printf("TU read %o (%d)\r\n", *dt->cur & 017, dt->cur-dt->start);
+	}else if(req & 2){
+		int x = h2f_fe[FEREG_TU56_DATA];
+		*dt->cur = x & 017;
+//		printf("TU write %o\n", x);
+	}
+	if(req & 8){
+//		printf("move %d\n", req&4);
+		if(req & 4){
+			dt->cur--;
+			if(dt->cur < dt->start)
+				dt->cur = dt->start + 5;
+		}else{
+			dt->cur++;
+			if(dt->cur >= dt->end)
+				dt->cur = dt->end - 6;
+		}
+	}
+}
+
 void
 fe_svc(void)
 {
@@ -697,6 +771,7 @@ fe_svc(void)
 	if(req & 2) svc_ptp();
 //	if(req & 4) svc_dis();
 	svc_dis();
+	if(req & 0x18) svc_dt((req>>3) & 0xF);
 }
 
 void*

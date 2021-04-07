@@ -39,6 +39,7 @@ enum
 {
 	DEV_PTR = 0,
 	DEV_PTP,
+	DEV_DT0,
 };
 
 struct dev
@@ -89,6 +90,8 @@ void cpu_printflags(void);
 
 void mnt_ptp(struct dev*);
 void unmnt_ptp(struct dev*);
+void mnt_dt(struct dev*);
+void unmnt_dt(struct dev*);
 void fe_svc(void);
 
 void initcrt(const char *host);

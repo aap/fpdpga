@@ -37,8 +37,8 @@ module tb_tu56();
 	reg fe_address = 0;
 	reg fe_read = 0;
 	reg fe_write = 0;
-	wire [4:0] fe_readdata;
-	reg [7:0] fe_writedata;
+	wire [31:0] fe_readdata;
+	reg [31:0] fe_writedata;
 
 	reg [0:2] rwb;// = 3'b101;
 
@@ -113,7 +113,7 @@ module tb_tu56();
 		fe_read <= 1;
 		@(posedge clk);
 		buffer <= fe_readdata[3:0];
-		if(fe_readdata[0])
+		if(fe_readdata[4])
 			$display("wrtm %d %o", fe_rq[0:1],
 				fe_readdata[3:0]);
 		else
@@ -143,7 +143,8 @@ module tb_tu56();
 	initial begin
 		#10;
 		con_go = 1;
-		tu.sw2 = 1;
+		tu.sw2 = 3;	// 3: local
+		tu.sw3 = 1;	// 1: fwd, 3: rev
 
 		con_wrtm = 0;
 		con_wr = 1;

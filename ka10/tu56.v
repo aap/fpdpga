@@ -32,20 +32,20 @@ module tu56(
 	input wire [0:3] con_select,
 	output wire con_select_echo,
 	output wire con_wrt_echo,
-	output wire [0:4] con_read,
-	input wire [0:4] con_write,
+	output wire [0:4] con_read,	// read from tape
+	input wire [0:4] con_write,	// written to tape
 	input wire con_wr,
 	input wire con_wrtm,
 	output wire con_wrtm_wait,
 
-
-	/* FE */
-	output wire [0:3] fe_rq,
+	/* FE - Avalon slave */
 	input wire fe_address,
 	input wire fe_read,
 	input wire fe_write,
-	output wire [4:0] fe_readdata,
-	input wire [7:0] fe_writedata
+	output wire [31:0] fe_readdata,
+	input wire [31:0] fe_writedata,
+
+	output wire [0:3] fe_rq
 );
 	/* switches */
 	reg [0:2] sw1 = 0;	// address select
@@ -57,10 +57,19 @@ module tu56(
 		if(fe_write && fe_address == 1) begin
 			sw1 <= fe_writedata[2:0];
 			sw2 <= fe_writedata[4:3];
-			sw3 <= fe_writedata[6:5];
-			sw4 <= fe_writedata[7];
+			sw3 <= fe_writedata[7:6];
+			sw4 <= fe_writedata[9];
 		end
 	end
+	wire [31:0] fe_readdata_sw;
+	assign fe_readdata_sw[2:0] = sw1;
+	assign fe_readdata_sw[5:3] = sw2;
+	assign fe_readdata_sw[8:6] = sw3;
+	assign fe_readdata_sw[9] = sw4;
+	// TODO: put more status in here
+	assign fe_readdata_sw[31:10] = 0;
+
+	assign fe_readdata = fe_address == 0 ? fe_readdata_data : fe_readdata_sw;
 
 	/* selection */
 	wire selcode = {1'b1, sw1} == con_select;
@@ -109,23 +118,21 @@ module tu56(
 	assign fe_rq[2] = fe_rd_rq;
 	assign fe_rq[3] = fe_wr_rq;
 
+	wire [31:0] fe_readdata_data;
 	reg [4:0] fe_readdata_fwd;
 	wire [7:0] fe_writedata_fwd;
 
-	assign fe_readdata = reverse ?
-		{fe_readdata_fwd[4], ~fe_readdata_fwd[3:0]} : fe_readdata_fwd;
+	assign fe_readdata_data[4] = fe_readdata_fwd[4];	// WRTM - don't wanna reverse this
+	// 3: mark track, 2-0: data tracks
+	assign fe_readdata_data[3:0] = reverse ? ~fe_readdata_fwd[3:0] : fe_readdata_fwd;
+	assign fe_readdata_data[31:5] = 0;
 	assign fe_writedata_fwd = reverse ? ~fe_writedata : fe_writedata;
 
 
 	assign con_wrtm_wait = select & (fe_rd_rq | fe_wr_rq);
 
-/*
-//	assign con_read = {5{select}} & (con_wrtm ? con_write : { tck[0], linebuf }) ;
-	assign con_read[0:1] = {2{select}} &
-		(con_wrtm ? con_write[0:1] : { tck[0], linebuf[0] });
-	assign con_read[2:4] = {3{select}} &
-		(con_wr ? con_write[2:4] : linebuf[1:3]);
-*/
+	// this is valid to be read by the controller
+	//   from fe_wr_rq falling to d_falling (tp1) when it is complemented
 	assign con_read = {5{select}} & { tck[0], linebuf };
 
 
@@ -141,9 +148,6 @@ module tu56(
 				tck <= tck + 1;
 				dck <= dck - 1;
 			end
-		end else begin
-			fe_wr_rq <= 0;
-			fe_rd_rq <= 0;
 		end
 	end
 
@@ -169,11 +173,17 @@ module tu56(
 	 */
 
 	always @(posedge clk) begin
+		if (~motion) begin
+			fe_wr_rq <= 0;
+			fe_rd_rq <= 0;
+		end
+
+
 		// read data from tape
 		// like tp0
-		if(d_rising & ~con_wrtm) begin
+		if(d_rising & ~(con_wrtm&select)) begin
 			fe_wr_rq <= 1;
-			fe_move <= ~con_wr;
+			fe_move <= ~(con_wr&select);
 		end
 		// request answered
 		if(fe_write & fe_wr_rq & fe_address == 0) begin
@@ -182,7 +192,7 @@ module tu56(
 		end
 
 		// mid of data - write to tape here
-		if(t_rising) begin
+		if(t_rising&select) begin
 			if(con_wrtm) begin
 				fe_rd_rq <= 1;
 				fe_move <= 1;
@@ -200,7 +210,7 @@ module tu56(
 
 		// simulate reading complemented data
 		// like tp1
-		if(d_falling & ~con_wrtm) begin
+		if(d_falling & ~(con_wrtm&select)) begin
 			linebuf <= ~linebuf;
 		end
 
